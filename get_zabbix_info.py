@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
+#导入django的运行环境，并进行初始化
 import os
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dashboard.settings')
 import django
-
 django.setup()
 
+#导入zabbix模块
 from zabbix_api import ZabbixAPI
-import ConfigParser
 from zabbix.models import Trigger_status
 
-hostnames = ['testimb', 'testimb2','oracle']
-config = ConfigParser.ConfigParser()
-zapi = ZabbixAPI(server="http://10.211.55.108/zabbix/")
-zapi.login("Admin", "zabbix")
+#导入参数模块
+import ConfigParser
+import ast
+cf = ConfigParser.ConfigParser()
+cf.read("zabbix.conf")
+#初始化各参数
+hostnames = ast.literal_eval(cf.get("host","hostnames"))
+zapi = ZabbixAPI(server=cf.get("server","serveraddress"))
+zapi.login(cf.get("userconfig","user"), cf.get("userconfig","password"))
 
 
 # 获取hostname的hostid
@@ -69,6 +73,5 @@ for hostname in hostnames:
         info_triggername = triggerinfo[2]
         info_triggeritemid = triggerinfo[3]
         info_triggerapplicationname = triggerinfo[4]
-        print triggerinfo
         update_mysql(info_triggerid, info_triggervalue, info_triggername, info_triggerapplicationname[0],
                      info_triggeritemid, hostname)
