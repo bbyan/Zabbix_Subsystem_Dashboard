@@ -1,0 +1,111 @@
+{% extends "zabbix/base.html"%}
+{%block content%}
+<div class="container">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" data-background-color="blue">
+                            <h2 class="title">系统整体状态</h2>
+                        </div>
+                        <div class="card-content table-responsive">
+                            <table class="table">
+                                <thead class="text-default">
+                                <th>服务名称</th>
+                                <th>服务状态</th>
+                                </thead>
+                                <tbody>
+                                {% for hostinfo in hostinfos %}
+                                {% if hostinfo.triggervalue == 0 %}
+                                <tr>
+                                    <td>{{hostinfo.triggername}}</td>
+                                    <td>正常</td>
+                                    {% else %}
+                                <tr class="warning">
+                                    <td>{{hostinfo.triggername}}</td>
+                                    <td>异常</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h2>子系统状态</h2>
+</div>
+<div class="container">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!--该循环显示每一个子系统的名称-->
+                {% for subsystemname in subsystemnames %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-stats">
+                        <!--通过判断triggervalue的值来显示子系统的背景的颜色-->
+                        {% if subsystemname.triggervalue == 1 %}
+                        <div class="card-header" data-background-color="red">
+                        {% else %}
+                        <div class="card-header" data-background-color="green">
+                        {% endif %}
+                                <!--通过判断子系统名称的长度来实现card-header的宽度-->
+                        {% if subsystemname.applicationname|length == 2%}
+                        <i class="text" style="padding:25px">{{subsystemname.applicationname}}</i>
+                        {% elif subsystemname.applicationname|length == 3 %}
+                        <i class="text" style="padding:15px">{{subsystemname.applicationname}}</i>
+                        {% else %}
+                        <i class="text">{{subsystemname.applicationname}}</i>
+                        {% endif %}
+
+                            <div class="progress">
+                                 {% if subsystemname.triggervalue == 1 %}
+                                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                     role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                                {% else %}
+                                 <div class="progress-bar progress-bar-success progress-bar-striped active"
+                                     role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                            <div class="card-content">
+                                <p class="category">状态</p>
+                                {% if subsystemname.triggervalue == 1 %}
+                                <h3 class="title">异常</h3>
+                                {% else %}
+                                <h3 class="title">正常</h3>
+                                {% endif %}
+
+                            </div>
+
+                            {% if subsystemname.triggervalue == 1 %}
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons text-danger">warning</i>
+                                    <a class="text-danger">{{ subsystemname.triggername }}</a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">done</i>
+                                    无问题
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock content%}
