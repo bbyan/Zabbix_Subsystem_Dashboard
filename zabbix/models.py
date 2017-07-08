@@ -17,13 +17,6 @@ class Trigger_status(models.Model):
     def __unicode__(self):
         return self.triggername
 
-
-class Subsystem_Info(models.Model):
-    subsystemname = models.CharField(max_length=20, primary_key=True)
-    subsystemstatus = models.IntegerField()
-    triggername = models.CharField(max_length=300, null=True)
-
-
 class Subsystem_view(models.Model):
     applicationname = models.CharField(primary_key=True,max_length=200)
     triggervalue = models.IntegerField()
