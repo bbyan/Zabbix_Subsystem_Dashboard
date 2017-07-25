@@ -59,6 +59,8 @@
                         <i class="text" style="padding:20px">{{subsystemname.applicationname}}</i>
                         {% elif subsystemname.applicationname|length == 3 %}
                         <i class="text" style="padding:15px">{{subsystemname.applicationname}}</i>
+                        {% elif subsystemname.applicationname|length == 4 %}
+                        <i class="text" style="padding:17px">{{subsystemname.applicationname}}</i>
                         {% else %}
                         <i class="text">{{subsystemname.applicationname}}</i>
                         {% endif %}
