@@ -1,23 +1,15 @@
 # -*- coding: utf-8 -*-
-#导入django的运行环境，并进行初始化
+# 导入django的运行环境，并进行初始化
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dashboard.settings')
 import django
-django.setup()
 
-#导入zabbix模块
+# 导入zabbix模块
 from zabbix_api import ZabbixAPI
 from zabbix.models import Trigger_status
 
-#导入参数模块
+# 导入参数模块
 import ConfigParser
 import ast
-cf = ConfigParser.ConfigParser()
-cf.read("zabbix.conf")
-#初始化各参数
-hostnames = ast.literal_eval(cf.get("host","hostnames"))
-zapi = ZabbixAPI(server=cf.get("server","serveraddress"))
-zapi.login(cf.get("userconfig","user"), cf.get("userconfig","password"))
 
 
 # 获取hostname的hostid
@@ -63,15 +55,25 @@ def update_mysql(triggerid, triggervalue, triggername, triggerapplicationname, t
                                             )
 
 
-for hostname in hostnames:
-    hostid = get_hostid(hostname)
-    triggerinfos = get_triggerListInfo(hostid)
+if __name__ == '__main__':
+    # 初始化各参数
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dashboard.settings')
+    django.setup()
+    cf = ConfigParser.ConfigParser()
+    cf.read("zabbix.conf")
+    hostnames = ast.literal_eval(cf.get("host", "hostnames"))
+    zapi = ZabbixAPI(server=cf.get("server", "serveraddress"))
+    zapi.login(cf.get("userconfig", "user"), cf.get("userconfig", "password"))
 
-    for triggerinfo in triggerinfos:
-        info_triggerid = triggerinfo[0]
-        info_triggervalue = triggerinfo[1]
-        info_triggername = triggerinfo[2]
-        info_triggeritemid = triggerinfo[3]
-        info_triggerapplicationname = triggerinfo[4]
-        update_mysql(info_triggerid, info_triggervalue, info_triggername, info_triggerapplicationname[0],
-                     info_triggeritemid, hostname)
+    for hostname in hostnames:
+        hostid = get_hostid(hostname)
+        triggerinfos = get_triggerListInfo(hostid)
+
+        for triggerinfo in triggerinfos:
+            info_triggerid = triggerinfo[0]
+            info_triggervalue = triggerinfo[1]
+            info_triggername = triggerinfo[2]
+            info_triggeritemid = triggerinfo[3]
+            info_triggerapplicationname = triggerinfo[4]
+            update_mysql(info_triggerid, info_triggervalue, info_triggername, info_triggerapplicationname[0],
+                         info_triggeritemid, hostname)
