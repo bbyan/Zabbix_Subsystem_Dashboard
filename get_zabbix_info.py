@@ -1,24 +1,33 @@
 # -*- coding: utf-8 -*-
-# 导入django的运行环境，并进行初始化
+"""
+Author: Lu Bin
+Contact:blu@cm-topsci.com
+Reference Link: http://www.cnblogs.com/justbio/p/6293279.html
+"""
+# This python shellscript only used in python 2.7
+# Import the Django runtime environment and initialize it
 import os
 import django
 
-# 导入zabbix模块
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dashboard.settings')
+django.setup()
+
+# Import zabbix module
 from zabbix_api import ZabbixAPI
 from zabbix.models import Trigger_status
 
-# 导入参数模块
+# Import configuration module
 import ConfigParser
 import ast
 
 
-# 获取hostname的hostid
-def get_hostid(host_name):
+# Get the host_id of hostname
+def get_host_id(host_name):
     return zapi.host.get({"filter": {"host": host_name}})[0]["hostid"]
 
 
-# 根据hostid,获取trigger的id,状态和解释和取得item的application值
-def get_triggerListInfo(hostId):
+# According to host_id to get the trigger id, state and explain and get the item value of the item
+def get_trigger_list_info(hostId):
     trigger_list = []
     trigger_value = []
     trigger_description = []
@@ -27,7 +36,7 @@ def get_triggerListInfo(hostId):
     trigger_itemid = []
     application_row = []
     application_name = []
-    # 处理trigger的信息
+    # Handle the trigger information
     temp = zapi.trigger.get({"filter": {"hostid": hostId}, "selectItems": "short"})
     for k in xrange(len(temp)):
         trigger_list.append(temp[k]["triggerid"])
@@ -38,13 +47,13 @@ def get_triggerListInfo(hostId):
         trigger_itemid_list.append([tempid['itemid'] for tempid in trigger_itemid_row[k]])
     for k in xrange(len(trigger_itemid_list)):
         trigger_itemid.append(trigger_itemid_list[k][0])
-    # 获得application的信息
+    # Get the application information
     for k in xrange(len(trigger_itemid)):
         application_row.append(zapi.application.get({"itemids": trigger_itemid[k]}))
         application_name.append([tempname['name'] for tempname in application_row[k]])
 
-    triggerListInfo = zip(trigger_list, trigger_value, trigger_description, trigger_itemid, application_name)
-    return triggerListInfo
+    trigger_list_info = zip(trigger_list, trigger_value, trigger_description, trigger_itemid, application_name)
+    return trigger_list_info
 
 
 def update_mysql(triggerid, triggervalue, triggername, triggerapplicationname, triggeritemid, host_name):
@@ -56,18 +65,17 @@ def update_mysql(triggerid, triggervalue, triggername, triggerapplicationname, t
 
 
 if __name__ == '__main__':
-    # 初始化各参数
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dashboard.settings')
-    django.setup()
+
+    # Initialize external parameters
     cf = ConfigParser.ConfigParser()
-    cf.read("zabbix.conf")
+    cf.read("get_zabbix_info.conf")
     hostnames = ast.literal_eval(cf.get("host", "hostnames"))
     zapi = ZabbixAPI(server=cf.get("server", "serveraddress"))
     zapi.login(cf.get("userconfig", "user"), cf.get("userconfig", "password"))
 
     for hostname in hostnames:
-        hostid = get_hostid(hostname)
-        triggerinfos = get_triggerListInfo(hostid)
+        hostid = get_host_id(hostname)
+        triggerinfos = get_trigger_list_info(hostid)
 
         for triggerinfo in triggerinfos:
             info_triggerid = triggerinfo[0]
