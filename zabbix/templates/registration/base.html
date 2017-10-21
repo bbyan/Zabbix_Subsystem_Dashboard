@@ -1,0 +1,11 @@
+{% extends "zabbix/base.html" %}
+{% block content %}
+     <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+        <form class="form" role="form" method="post" action=".">
+            {% block reg_content %}
+            Ω{% endblock reg_content %}
+        </form>
+        </div>
+     </div>
+{% endblock content %}

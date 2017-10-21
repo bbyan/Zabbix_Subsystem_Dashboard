@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 每隔30s刷新 -->
-    <meta http-equiv="refresh" content="30">
+    {% block head_content %}
+    {% endblock head_content %}
     <!-- Font Awesome -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="{% static 'bootstrap/fonts/font-awesome.min.css' %}">
@@ -14,7 +14,6 @@
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/material-dashboard.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/fonts/opensans.css' %}" rel='stylesheet' type='text/css'>
-    <title>PVG IMF监控系统</title>
 </head>
 <!--Static navbar -->
 <body>
