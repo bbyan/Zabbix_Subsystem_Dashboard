@@ -27,10 +27,10 @@ def index(request):
 
 
 @login_required
-def daily_check(request):
-    return render(request, 'maintain/daily_check.html')
+def daily_check_aims(request):
+    return render(request, 'maintain/daily_check_aims.html')
 
 
 @login_required
-def system_maintain(request):
-    return render(request, 'maintain/system_maintain.html')
+def daily_check_ib(request):
+    return render(request, 'maintain/daily_check_ib.html')
