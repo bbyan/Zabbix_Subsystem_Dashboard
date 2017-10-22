@@ -11,4 +11,6 @@ urlpatterns = [
     # 主页
     url(r'^$', views.index, name='index'),
     url(r'^accounts/', include('registration.backends.simple.urls'),),
+    url(r'^daily/',views.daily_check,name='dailycheck'),
+    url(r'^maintain/',views.system_maintain,name='maintain'),
 ]
