@@ -21,16 +21,17 @@
     <nav class="navbar navbar-success" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">PVG IMF 监控系统</a>
+                <a class="navbar-brand" href="{% url 'zabbix:index' %}">PVG IMF 监控系统</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
                            aria-expanded="false">工具<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">运维日检</a></li>
-                            <li><a href="#">系统维护</a></li>
+                            <li><a href="{% url 'zabbix:dailycheck' %}">运维日检</a></li>
+                            <li><a href="{% url 'zabbix:maintain' %}">系统维护</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/zabbix/">Zabbix监控平台</a></li>
                         </ul>
