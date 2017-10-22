@@ -3,6 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from models import Trigger_status, Subsystem_view
+from django.contrib.auth.decorators import login_required
+
+# for auth
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
 
 
 # Create your views here.
@@ -20,9 +26,11 @@ def index(request):
     return render(request, 'zabbix/index.html', {'hostinfos': hostinfos, 'subsystemnames': subsystemnames})
 
 
+@login_required
 def daily_check(request):
-    pass
+    return render(request, 'maintain/daily_check.html')
 
 
-def system_mataince(request):
-    pass
+@login_required
+def system_maintain(request):
+    return render(request, 'maintain/system_maintain.html')
