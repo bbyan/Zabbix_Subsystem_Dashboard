@@ -1,0 +1,10 @@
+{% extends "registration/base.html" %}
+{% block head_content %}
+    <title>登录</title>
+{% endblock head_content %}
+{% block reg_content %}
+     <h2>注册</h2>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit"/>
+{% endblock %}
