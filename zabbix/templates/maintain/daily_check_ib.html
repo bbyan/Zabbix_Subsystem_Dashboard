@@ -1,8 +1,10 @@
-{% extends "maintain/base.html" %}
-{% block head_content %}
-    <title>系统维护</title>
-{% endblock head_content %}
+{% extends "maintain/default_daily_check.html" %}
+{% block customer_system_name %}
+    <div class="card-header" data-background-color="blue">
+        <h4 class="title">IB-Server日检</h4>
+    </div>
+{% endblock customer_system_name %}
 
-
-{% block content %}
-{% endblock %}
+{% block  socket %}
+var socket = new WebSocket("ws://" + window.location.host + "/daily/ib_server/");
+{% endblock socket %}

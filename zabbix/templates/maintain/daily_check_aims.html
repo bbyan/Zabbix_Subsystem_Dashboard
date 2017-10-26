@@ -1,9 +1,10 @@
-{% extends "maintain/base.html" %}
+{% extends "maintain/default_daily_check.html" %}
+{% block customer_system_name %}
+    <div class="card-header" data-background-color="orange">
+        <h4 class="title">AIMS-Server日检</h4>
+    </div>
+{% endblock customer_system_name %}
 
-{% block head_content %}
-    <title>运维日检</title>
-{% endblock head_content %}
-
-
-{% block content %}
-{% endblock content %}
+{% block  socket %}
+var socket = new WebSocket("ws://" + window.location.host + "/daily/aims/");
+{% endblock socket %}

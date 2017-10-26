@@ -1,0 +1,50 @@
+{% extends "maintain/base.html" %}
+{% block head_content %}
+    <title>系统维护</title>
+{% endblock head_content %}
+
+{% block content %}
+     <div class="container">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="card">
+                        {% block customer_system_name %}
+                        {% endblock customer_system_name%}
+                        <div class="card-content">
+                            <button type="submit" class="btn btn-default pull-right" type="button" id="check"
+                                    value="check">开始
+                            </button>
+                            <div class="clearfix"></div>
+                            <h3>执行结果:</h3>
+                            <div id="messagecontainer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block web_script %}
+    <script type="text/javascript">//<![CDATA[
+    $(function () {
+        $('#check').click(function () {
+            {% block  socket %}
+            {% endblock socket %}
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+                socket.send($('#check').val());//发送数据到服务端
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印服务端返回的数据
+                $('#messagecontainer').prepend('<p><pre>' + e.data + '</pre></p>');
+                $('#messagecontainer').prepend('<hr />');
+                socket.close();
+            };
+            $("#check").attr("disabled", true);
+        });
+    });
+    </script>
+{% endblock web_script %}
