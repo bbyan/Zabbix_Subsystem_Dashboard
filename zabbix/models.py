@@ -13,6 +13,7 @@ class Trigger_status(models.Model):
     itemid = models.IntegerField()
     applicationname = models.CharField(max_length=20)
     hostname = models.CharField(max_length=40, null=True)
+    eventid = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.triggername
