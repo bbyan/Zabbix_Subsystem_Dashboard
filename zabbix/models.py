@@ -10,21 +10,26 @@ class Trigger_status(models.Model):
     triggerid = models.IntegerField(primary_key=True)
     triggervalue = models.IntegerField()
     triggername = models.CharField(max_length=300, null=True)
+    triggerpriority = models.IntegerField()
+    triggercomment = models.CharField(max_length=300,null=True)
+    triggerlastchange = models.CharField(max_length=300,null=True)
     itemid = models.IntegerField()
     applicationname = models.CharField(max_length=20)
     hostname = models.CharField(max_length=40, null=True)
-    eventid = models.IntegerField(null=True)
+    latesteventid = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.triggername
 
+
 class Subsystem_view(models.Model):
-    applicationname = models.CharField(primary_key=True,max_length=200)
+    applicationname = models.CharField(primary_key=True, max_length=200)
     triggervalue = models.IntegerField()
-    triggername = models.CharField(max_length=300,null=True)
+    triggername = models.CharField(max_length=300, null=True)
 
     class Meta:
         managed = False
         db_table = "zabbix_subsystemname"
+
     def __unicode__(self):
         return self.applicationname
