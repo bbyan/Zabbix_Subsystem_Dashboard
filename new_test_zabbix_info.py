@@ -19,6 +19,10 @@ def get_host_id(host_name):
     return zapi.host.get({"filter": {"host": host_name}})[0]["hostid"]
 
 
+import time
+
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(1527557430)))
+
 if __name__ == '__main__':
     # Initialize external parameters
     cf = ConfigParser.ConfigParser()
@@ -30,14 +34,16 @@ if __name__ == '__main__':
 for hostname in hostnames:
     hostid = get_host_id(hostname)
     temp = zapi.trigger.get({"filter": {"hostid": get_host_id(hostname)}, "selectItems": "short"})
-
+    print temp
     trigger_list = []
-    trigger_eventid = []
+    # trigger_eventid = []
     for k in range(len(temp)):
         trigger_list.append(temp[k]["triggerid"])
+        trigger_list.append(temp[k]["priority"])
+        trigger_list.append(time.strftime("%Y-%m-%d %H:%M:%S",time.gmtime(float(temp[k]["lastchange"]))))
 
-    for k in range(len(trigger_list)):
-        trigger_eventid.append(zapi.event.get(
-            {"objectids": trigger_list[k], "sortorder": "DESC", "sortfield": ["clock", "eventid"], "value": "1"})[0])
+    # for k in range(len(trigger_list)):
+    #     trigger_eventid.append(zapi.event.get(
+    #         {"objectids": trigger_list[k], "sortorder": "DESC", "sortfield": ["clock", "eventid"], "value": "1"})[0])
     print trigger_list
-    print trigger_eventid
+    # print trigger_eventid
