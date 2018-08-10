@@ -28,9 +28,7 @@ def execute_query(sql):
 
 
 def generate_json(query_result):
-    data_dict = {}
-    data_dict['ProvinceID'] = '1010'
-    data_dict['_DATA_'] = query_result
+    data_dict = {'ProvinceID': '1010', '_DATA_': query_result}
     return data_dict
 
 
@@ -38,11 +36,13 @@ if __name__ == '__main__':
     trigger_status_sql = "select triggerlastchange occurTime,applicationname belongModule," \
                          "triggerid alertID, triggercomment alertDescr,triggerpriority level,triggervalue status " \
                          "from zabbix_trigger_status where applicationname <> 'host'"
-
-    host_status_sql = "select date_format(cast(rowoperatedatetime as char),'%Y-%m-%d %H:%m:%s') RowOperateDatetime," \
-                      "triggername TriggerName,triggervalue TriggerValue" \
-                      " from zabbix_trigger_status where applicationname = 'host'"
     trigger_status = json.dumps(generate_json(execute_query(trigger_status_sql)), sort_keys=True)
-    host_status = json.dumps(generate_json(execute_query(host_status_sql)), sort_keys=True)
+    print trigger_status
 
-    #todo:添加post函数
+    # host_status_sql = "select date_format(cast(rowoperatedatetime as char),'%Y-%m-%d %H:%m:%s') RowOperateDatetime," \
+    #                   "triggername TriggerName,triggervalue TriggerValue" \
+    #                   " from zabbix_trigger_status where applicationname = 'host'"
+    # host_status = json.dumps(generate_json(execute_query(host_status_sql)), sort_keys=True)
+
+
+    # todo:添加post函数
